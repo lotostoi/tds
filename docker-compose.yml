@@ -1,0 +1,48 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    volumes:
+      - .:/var/www
+    networks:
+      - backend
+    environment:
+      - DB_HOST=db_backend
+      - DB_PORT=3306
+      - DB_DATABASE=mvp-cloud
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+
+  db_backend:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mvp-cloud
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+    driver: bridge
