@@ -17,6 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
+    ports:
+      - "1006:9000"
     volumes:
       - .:/var/www
     networks:
