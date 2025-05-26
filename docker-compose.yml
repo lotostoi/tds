@@ -33,8 +33,8 @@ services:
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
     volumes:
       - db-data:/var/lib/mysql
     ports:
