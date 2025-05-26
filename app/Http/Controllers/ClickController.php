@@ -52,7 +52,7 @@ class ClickController extends Controller
     private function generateRedirectUrl(string $itemId, string $clickId, string $marketplace, string $sellerId): string
     {
         $baseUrl = $marketplace === 'wb'
-            ? "https://www.wildberries.ru/seller/{$sellerId}"
+            ? "https://www.wildberries.ru/catalog/{$itemId}/detail.aspx"
             : "https://www.ozon.ru/product/{$itemId}";
 
         $params = http_build_query([
