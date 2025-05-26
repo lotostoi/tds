@@ -21,7 +21,7 @@ class ClickController extends Controller
             return response()->json(['message' => 'Empty request']);
         }
 
-        $clickId = 'clk_' . Str::random(10);
+        $clickId = 'clk_' . (string) Str::uuid();
 
         Click::create([
             'click_id' => $clickId,

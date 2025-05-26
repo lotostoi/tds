@@ -36,7 +36,8 @@ class ClickRequest extends FormRequest
             ];
         }
 
-        throw new \Exception('Empty request');
+        return [];
+
     }
 
     /**
@@ -73,4 +74,6 @@ class ClickRequest extends FormRequest
             'messages' => $validator->errors()
         ], 422));
     }
+
+
 }
