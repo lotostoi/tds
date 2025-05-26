@@ -36,7 +36,7 @@ class ClickRequest extends FormRequest
             ];
         }
 
-        return [];
+        return response()->json(['message' => 'Empty request']);
     }
 
     /**
