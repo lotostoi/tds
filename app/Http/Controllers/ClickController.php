@@ -8,10 +8,17 @@ use Illuminate\Support\Str;
 
 class ClickController extends Controller
 {
+    public function index()
+    {
+        $clicks = Click::latest()->paginate(20);
+
+        return view('clicks.index', compact('clicks'));
+    }
+
     public function handle(ClickRequest $request)
     {
         if (empty($request->all())) {
-            return response()->json(['message' => 'Click received']);
+            return response()->json(['message' => 'Empty request']);
         }
 
         $clickId = 'clk_' . Str::random(10);

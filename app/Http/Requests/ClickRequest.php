@@ -21,7 +21,7 @@ class ClickRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         // Если есть хотя бы один параметр в запросе, применяем правила
         if (!empty($this->all())) {
@@ -36,7 +36,7 @@ class ClickRequest extends FormRequest
             ];
         }
 
-        return response()->json(['message' => 'Empty request']);
+        throw new \Exception('Empty request');
     }
 
     /**
