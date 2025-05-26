@@ -24,11 +24,11 @@ services:
     networks:
       - backend
     environment:
-      - DB_HOST=db_backend
-      - DB_PORT=3306
-      - DB_DATABASE=mvp-cloud
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
 
   db:
     image: mysql:8.0
