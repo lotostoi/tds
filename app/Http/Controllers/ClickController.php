@@ -56,7 +56,7 @@ class ClickController extends Controller
             : "https://www.ozon.ru/product/{$itemId}";
 
         $params = http_build_query([
-            'utm_campaign' => $sellerId . '-id-' . $clickId,
+            'utm_campaign' => $sellerId . '-id-my_ad_campaign',
             'utm_medium' => 'cpa_bloggers',
             'utm_source' => 'tds',
             'utm_term' => $clickId
