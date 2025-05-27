@@ -28,7 +28,6 @@ class LogLClickInfoJob implements ShouldQueue
      */
     public function handle(): void
     {
-        sleep(30);
         try {
             Click::create($this->params);
             Log::info('Click logged', $this->params);
