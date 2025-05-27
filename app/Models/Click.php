@@ -20,6 +20,8 @@ class Click extends Model
         'status',
         'pp_id',
         'seller_id',
+        'url',
+        'redirect_url',
     ];
 
     protected $casts = [

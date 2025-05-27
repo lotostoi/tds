@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClickRequest;
+use App\Jobs\LogLClickInfoJob;
 use App\Models\Click;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,16 @@ class ClickController extends Controller
 
         $clickId = 'clk_' . (string) Str::uuid();
 
-        Click::create([
+        $url = $request->fullUrl();
+
+        $redirectUrl = $this->generateRedirectUrl(
+            $request->query('item'),
+            $clickId,
+            $request->query('mp'),
+            $request->query('seller_id')
+        );
+
+        LogLClickInfoJob::dispatch([
             'click_id' => $clickId,
             'item_id' => $request->query('item'),
             'marketplace' => $request->query('mp'),
@@ -35,16 +45,11 @@ class ClickController extends Controller
             'pp_id' => $request->query('pp_id', null),
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
-            'referer' => $request->header('referer')
+            'referer' => $request->header('referer'),
+            'url' => $url,
+            'redirect_url' => $redirectUrl,
         ]);
 
-        // Формирование URL для редиректа
-        $redirectUrl = $this->generateRedirectUrl(
-            $request->query('item'),
-            $clickId,
-            $request->query('mp'),
-            $request->query('seller_id')
-        );
 
         return redirect($redirectUrl);
     }
