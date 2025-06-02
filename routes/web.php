@@ -19,4 +19,4 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 require_once __DIR__.'/auth.php';
-require_once __DIR__.'/Seller/seller.php';
+require_once __DIR__.'/seller/seller.php';

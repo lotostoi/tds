@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
-# Базовый образ с PHP 8.2 и FastCGI Process Manager для обработки PHP запросов
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -8,23 +9,24 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     bash \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql pcntl gd
+    && docker-php-ext-install zip pdo pdo_mysql pcntl gd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
-
-RUN docker-php-ext-install pdo pdo_mysql
-
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 
 WORKDIR /var/www/html
 
 COPY . .
 
-RUN composer install --optimize-autoloader
+RUN git config --global --add safe.directory /var/www/html && composer install --optimize-autoloader
 
 RUN cp .env.example .env && php artisan key:generate
 
