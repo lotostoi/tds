@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     git \
     bash \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql pcntl
+    && docker-php-ext-install zip pdo pdo_mysql pcntl gd
 
 RUN pecl install redis \
     && docker-php-ext-enable redis
