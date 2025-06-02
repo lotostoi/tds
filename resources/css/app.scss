@@ -668,3 +668,31 @@
         display: none;
     }
 }
+
+// Product Cards Grouping Styles
+.product-cards-table {
+    .group-even {
+        background-color: rgba(31, 41, 55, 0.4) !important;
+
+        &:hover {
+            background-color: rgba(31, 41, 55, 0.6) !important;
+        }
+    }
+
+    .group-odd {
+        background-color: rgba(17, 24, 39, 0.4) !important;
+
+        &:hover {
+            background-color: rgba(17, 24, 39, 0.6) !important;
+        }
+    }
+
+    .group-border-top {
+        border-top: 2px solid #3b82f6;
+    }
+
+    .imt-id {
+        font-weight: 600;
+        color: #60a5fa;
+    }
+}

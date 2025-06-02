@@ -10,4 +10,7 @@
     <a href="{{ route('clicks.index', ['seller' => $seller->id]) }}" class="btn {{ request()->routeIs('clicks.index') ? 'btn-orange' : 'btn-gray' }}">
         Лог переходов
     </a>
+    <a href="{{ route('seller.product-cards.index', ['seller' => $seller->id]) }}" class="btn {{ request()->routeIs('seller.product-cards.*') ? 'btn-orange' : 'btn-gray' }}">
+        Карточки товаров
+    </a>
 </div>

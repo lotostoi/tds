@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Crypt;
 
 class Seller extends Model
 {
@@ -94,8 +96,32 @@ class Seller extends Model
         return $this;
     }
 
+    /**
+     * Получить расшифрованный API ключ
+     */
+    public function getDecryptedApiKey(): ?string
+    {
+        if ($this->api_key) {
+            try {
+                return Crypt::decryptString($this->api_key);
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
     public function clicks()
     {
         return $this->hasMany(Click::class, 'seller_id', 'seller_id');
+    }
+
+    /**
+     * Связь с карточками товаров
+     */
+    public function productCards(): HasMany
+    {
+        return $this->hasMany(ProductCard::class);
     }
 }

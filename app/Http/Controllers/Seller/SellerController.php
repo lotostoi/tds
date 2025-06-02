@@ -6,8 +6,10 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\CreateSellerRequest;
+use App\Http\Requests\Seller\UpdateSellerRequest;
 use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class SellerController extends Controller
 {
@@ -26,7 +28,11 @@ class SellerController extends Controller
     public function store(CreateSellerRequest $request)
     {
 
-        Seller::create($request->validated());
+        $data = $request->validated();
+
+        $data['api_key'] = Crypt::encryptString($data['api_key']);
+
+        Seller::create($data);
 
         return redirect()->route('seller.index')->with('success', 'Продавец успешно создан');
     }
@@ -41,7 +47,20 @@ class SellerController extends Controller
         return view('seller.edit', compact('seller'));
     }
 
-    public function update(Request $request, Seller $seller) {}
+    public function update(UpdateSellerRequest $request, Seller $seller) {
+        $data = $request->validated();
+
+        if (isset($data['api_key']) && empty($data['api_key'])) {
+            unset($data['api_key']);
+        } else {
+
+            $data['api_key'] = Crypt::encryptString($data['api_key']);
+        }
+
+        $seller->update($data);
+
+        return redirect()->route('seller.index')->with('success', 'Продавец успешно обновлен');
+    }
 
     public function destroy(Seller $seller)
     {
