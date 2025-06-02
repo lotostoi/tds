@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Requests\ClickRequest;
 use App\Jobs\LogLClickInfoJob;
 use App\Models\Click;
+use App\Models\Seller;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 class ClickController extends Controller
 {
-    public function index()
+    public function index(Seller $seller = null)
     {
-        $clicks = Click::latest()->paginate(20);
+        $clicks = Click::where('seller_id', $seller?->seller_id)
+            ->latest()
+            ->paginate(20);
 
-        return view('clicks.index', compact('clicks'));
+        return view('seller.clicks.index', compact('clicks', 'seller'));
     }
 
     public function handle(ClickRequest $request)
