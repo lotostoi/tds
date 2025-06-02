@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/clicks/{seller?}', [ClickController::class, 'index'])->name('clicks.index');
+    Route::get('/clicks/{seller?}/export', [ClickController::class, 'exportCsv'])->name('clicks.export');
 
     Route::get('/seller/{seller}/external-traffic', [ExternalTrafficController::class, 'index'])->name('seller.external-traffic.index');
     Route::get('/seller/{seller}/external-traffic/create', [ExternalTrafficController::class, 'create'])->name('seller.external-traffic.create');

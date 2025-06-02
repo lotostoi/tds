@@ -70,37 +70,48 @@ class ExternalTrafficController extends Controller
             ->orderBy('event_date', 'desc')
             ->get();
 
-        return response()->streamDownload(function() use ($externalTraffic) {
-            $output = fopen('php://output', 'w');
-            fputcsv($output, [
-                'Event Date',
-                'UTM Source',
-                'UTM Medium',
-                'UTM Campaign',
-                'UTM Term',
-                'UTM Content',
-                'Clicks',
-                'Ordered Items',
-                'Order Value (RUB)',
-                'Platform'
-            ]);
+        $csvData = [];
 
-            foreach ($externalTraffic as $traffic) {
-                fputcsv($output, [
-                    $traffic->event_date,
-                    $traffic->utm_source,
-                    $traffic->utm_medium,
-                    $traffic->utm_campaign,
-                    $traffic->utm_term,
-                    $traffic->utm_content,
-                    $traffic->clicks,
-                    $traffic->ordered_items,
-                    $traffic->order_value_rub,
-                    $traffic->platform
-                ]);
-            }
+        // Заголовки
+        $csvData[] = [
+            'Event Date',
+            'UTM Source',
+            'UTM Medium',
+            'UTM Campaign',
+            'UTM Term',
+            'UTM Content',
+            'Clicks',
+            'Ordered Items',
+            'Order Value (RUB)',
+            'Platform'
+        ];
 
-            fclose($output);
-        }, 'external-traffic.csv', ['Content-Type' => 'text/csv']);
+        // Данные
+        foreach ($externalTraffic as $traffic) {
+            $csvData[] = [
+                $traffic->event_date,
+                $traffic->utm_source,
+                $traffic->utm_medium,
+                $traffic->utm_campaign,
+                $traffic->utm_term,
+                $traffic->utm_content,
+                $traffic->clicks,
+                $traffic->ordered_items,
+                $traffic->order_value_rub,
+                $traffic->platform
+            ];
+        }
+
+        // Генерируем CSV строку
+        $csvString = '';
+        foreach ($csvData as $row) {
+            $csvString .= implode(',', array_map(function($field) {
+                return '"' . str_replace('"', '""', $field) . '"';
+            }, $row)) . "\n";
+        }
+
+        return response($csvString)
+            ->header('Content-Type', 'text/csv')
+            ->header('Content-Disposition', 'attachment; filename="external-traffic.csv"');
     }
 }

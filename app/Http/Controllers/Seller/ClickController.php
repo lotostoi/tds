@@ -73,4 +73,65 @@ class ClickController extends Controller
 
         return $baseUrl . '?' . $params;
     }
+
+    public function exportCsv(Seller $seller = null)
+    {
+        $clicks = Click::where('seller_id', $seller->seller_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $csvData = [];
+
+        // Заголовки
+        $csvData[] = [
+            'Click ID',
+            'Item ID',
+            'PP ID',
+            'Marketplace',
+            'Link ID',
+            'Blogger ID',
+            'UTM Medium',
+            'UTM Source',
+            'IP Address',
+            'User Agent',
+            'Referer',
+            'URL',
+            'Redirect URL',
+            'Status',
+            'Created At'
+        ];
+
+        // Данные
+        foreach ($clicks as $click) {
+            $csvData[] = [
+                $click->click_id,
+                $click->item_id,
+                $click->pp_id,
+                $click->marketplace,
+                $click->link_id,
+                $click->blogger_id,
+                $click->utm_medium,
+                $click->utm_source,
+                $click->ip_address,
+                $click->user_agent,
+                $click->referer,
+                $click->url,
+                $click->redirect_url,
+                $click->status,
+                $click->created_at
+            ];
+        }
+
+        // Генерируем CSV строку
+        $csvString = '';
+        foreach ($csvData as $row) {
+            $csvString .= implode(',', array_map(function($field) {
+                return '"' . str_replace('"', '""', $field) . '"';
+            }, $row)) . "\n";
+        }
+
+        return response($csvString)
+            ->header('Content-Type', 'text/csv')
+            ->header('Content-Disposition', 'attachment; filename="clicks.csv"');
+    }
 }

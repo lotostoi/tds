@@ -11,6 +11,10 @@
         <h1 class="text-2xl font-bold text-gray-100"> Лог переходов</h1>
     </div>
 
+    <div class="flex justify-end">
+        <a href="{{ route('clicks.export', $seller) }}" class="btn btn-primary">Экспорт в CSV</a>
+    </div>
+
     <div class="card overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-700">
             <thead>
